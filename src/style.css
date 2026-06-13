@@ -698,6 +698,7 @@ body.has-player { padding-bottom: 70px; }
 .content .log-play:hover .log-play__ic { opacity: 1; background: rgba(20, 17, 14, 0.42); }
 .content .log-row.is-playing .log-play__ic { opacity: 1; background: var(--accent-veil); }
 .content .log-row.is-playing .log-play__ic::before { width: 12px; height: 12px; border: 0; border-radius: 2px; margin: 0; background: #fff; }
+.content .log-row.is-playing.is-paused .log-play__ic::before { width: 0; height: 0; border-style: solid; border-width: 7px 0 7px 12px; border-color: transparent transparent transparent #fff; border-radius: 0; margin-left: 3px; background: none; }
 .content .log-row.is-playing h3 { color: var(--accent); }
 .content .log-play:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
@@ -707,6 +708,7 @@ body.has-player { padding-bottom: 70px; }
 .content .track-play:active { transform: translateY(1px); }
 .content .track-play__ic { width: 0; height: 0; border-style: solid; border-width: 5px 0 5px 9px; border-color: transparent transparent transparent currentColor; margin-left: 2px; }
 .content .track-play.is-playing .track-play__ic { width: 9px; height: 9px; border: 0; border-radius: 1px; margin: 0; background: currentColor; }
+.content .track-play.is-playing.is-paused .track-play__ic { width: 0; height: 0; border-style: solid; border-width: 5px 0 5px 9px; border-color: transparent transparent transparent currentColor; border-radius: 0; margin-left: 2px; background: none; }
 .content .track-play:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* ════════ RESPONSIVE — player ════════ */

@@ -173,7 +173,10 @@ cover, duration, preview URL and Apple Music link, ordered newest-release-first.
 
 **Play buttons are wired by index.** Each discography row and the Latest tracklist row has
 a `data-qi="N"` attribute = the track's position in `src/tracks.js` (0-based). The player
-queues across the whole list, so prev/next/auto-advance walk every track.
+queues across the whole list, so prev/next/auto-advance walk every track. Clicking a row's
+cover/play button **toggles** that track: the first click plays it, and clicking the
+currently-playing track pauses it (its icon flips to a stop square while playing and a play
+triangle while paused) — clicking another track switches to it from the start.
 
 **To refresh after a new release** (so the player and discography stay current),
 regenerate `src/tracks.js` from Apple Music's catalog and re-download covers:
@@ -197,5 +200,7 @@ curl -sL "https://itunes.apple.com/lookup?id=1888965014&entity=album&limit=200&c
 - [ ] Contact email is current (`nicartjay@rakumail.jp`).
 - [ ] Links open the correct pages.
 - [ ] The player plays a preview from a discography row and from the Latest tracklist.
+- [ ] Clicking the currently-playing track's cover **pauses** it (and resumes on next click)
+      rather than restarting from the beginning.
 - [ ] `npm run build` completes with no errors.
 - [ ] `npm run preview` looks right on desktop **and** a narrow phone width.

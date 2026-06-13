@@ -232,6 +232,8 @@ if (prefersReduced) {
     if (iconPlay) iconPlay.style.display = on ? 'none' : ''
     if (iconPause) iconPause.style.display = on ? '' : 'none'
     toggle.setAttribute('aria-label', on ? 'Pause' : 'Play')
+    // Active track shows a stop square while playing, a play triangle while paused.
+    document.querySelectorAll('.is-playing').forEach((el) => el.classList.toggle('is-paused', !on))
   }
   const play = () => {
     const p = audio.play()
@@ -294,10 +296,16 @@ if (prefersReduced) {
   })
 
   // Wire every play trigger (discography rows + Latest tracklist).
+  // Clicking the active track toggles play/pause; any other track loads fresh.
   document.querySelectorAll('[data-qi]').forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault()
-      load(parseInt(btn.dataset.qi, 10) || 0, true)
+      const n = parseInt(btn.dataset.qi, 10) || 0
+      if (n === idx) {
+        audio.paused ? play() : audio.pause()
+      } else {
+        load(n, true)
+      }
     })
   })
 })()

@@ -4,6 +4,17 @@ All notable changes to this project are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); this project does not yet use formal
 semantic versioning.
 
+## [1.4.1] — 2026-06-13
+
+### Fixed
+- **Clicking the playing track's cover now pauses it instead of restarting.** The
+  song-list play buttons (`[data-qi]`) unconditionally reloaded and replayed the track from
+  0:00 on every click; they now toggle play/pause when the clicked track is already the
+  active one, and only load fresh when switching tracks (matching the toolbar button).
+- The row/button icon now reflects real playback state — a stop square while playing, a play
+  triangle while paused (via a new `is-paused` class) — instead of showing a stop square
+  whenever a track was merely the active one.
+
 ## [1.4.0] — 2026-06-13
 
 ### Changed
