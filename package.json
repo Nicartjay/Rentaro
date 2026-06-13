@@ -1,0 +1,15 @@
+{
+  "name": "rentaro-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Official site for 連太郎 / Rentaro (Nicart) — rentaro.nicart.space",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^6.0.7"
+  }
+}

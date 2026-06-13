@@ -1,0 +1,450 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rentaro · 連太郎 — Official Site</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f7f8fa;
+      --surface-warm: #fff1f0;
+      --fg: #1f1f1f;
+      --fg-2: #4b5563;
+      --muted: #697386;
+      --meta: #d32029;
+      --border: #d9dce3;
+      --border-soft: #eef0f4;
+      --accent: #d32029;
+      --accent-on: #ffffff;
+      --accent-hover: color-mix(in oklab, var(--accent), black 8%);
+      --accent-active: color-mix(in oklab, var(--accent), black 14%);
+      --success: #22a06b;
+      --warn: #faad14;
+      --danger: #cf1322;
+      --font-display: "Ant Sans", "Alibaba PuHuiTi", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", Inter, Arial, sans-serif;
+      --font-body: "Ant Sans", "Alibaba PuHuiTi", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", Inter, Arial, sans-serif;
+      --font-mono: "SF Mono", ui-monospace, Menlo, monospace;
+      --leading-body: 1.52;
+      --leading-tight: 1.08;
+      --tracking-display: -0.018em;
+      --section-y-desktop: 96px;
+      --section-y-phone: 48px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-pill: 9999px;
+      --elev-raised: 0 18px 42px rgba(31, 31, 31, 0.10);
+      --focus-ring: 0 0 0 4px rgba(211, 32, 41, 0.22);
+      --motion-fast: 140ms;
+      --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+      --container-max: 1200px;
+      --container-gutter-desktop: 36px;
+      --container-gutter-phone: 16px;
+
+      --accent-soft: color-mix(in oklch, var(--accent) 12%, transparent);
+      --fg-soft: color-mix(in oklch, var(--fg) 6%, transparent);
+      --fs-h1: clamp(48px, 7.5vw, 96px);
+      --fs-h2: clamp(28px, 3.6vw, 44px);
+      --fs-h3: 20px;
+      --fs-lead: 18px;
+      --fs-body: 16px;
+      --fs-meta: 13px;
+      --gap-sm: 12px;
+      --gap-md: 20px;
+      --gap-lg: 32px;
+      --gap-xl: 56px;
+      --gap-2xl: 96px;
+      --container: var(--container-max);
+      --gutter: var(--container-gutter-desktop);
+      --radius: var(--radius-md);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: var(--fs-body); line-height: var(--leading-body); -webkit-font-smoothing: antialiased; }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    p { text-wrap: pretty; }
+    h1, h2, h3, h4 { text-wrap: balance; }
+
+    .container { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+    .section { padding-block: clamp(var(--section-y-phone), 8vw, var(--section-y-desktop)); }
+    .section + .section { border-top: 1px solid var(--border); }
+    .row { display: flex; align-items: center; gap: var(--gap-md); }
+    .row-between { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-md); }
+    .grid-1-2 { display: grid; grid-template-columns: 1fr 1.4fr; gap: var(--gap-xl); align-items: center; }
+    @media (max-width: 920px) { .grid-1-2 { grid-template-columns: 1fr; gap: var(--gap-lg); } :root { --gutter: var(--container-gutter-phone); } }
+
+    .h1, h1 { font-family: var(--font-display); font-size: var(--fs-h1); line-height: var(--leading-tight); letter-spacing: var(--tracking-display); font-weight: 800; margin: 0; }
+    .h2, h2 { font-family: var(--font-display); font-size: var(--fs-h2); line-height: 1.12; letter-spacing: -0.012em; font-weight: 700; margin: 0; }
+    .h3, h3 { font-size: var(--fs-h3); font-weight: 600; line-height: 1.32; margin: 0; }
+    .lead { font-size: var(--fs-lead); line-height: 1.55; color: var(--fg-2); max-width: 60ch; margin: 0; }
+    .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0 0 var(--gap-md); }
+    .meta { font-family: var(--font-mono); font-size: var(--fs-meta); color: var(--muted); letter-spacing: 0.02em; }
+    .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+    .jp { font-feature-settings: "palt" 1; }
+    .en-sub { display: block; font-size: 0.42em; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-top: 14px; }
+
+    .topnav { position: sticky; top: 0; z-index: 10; background: color-mix(in oklch, var(--bg) 92%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .topnav-inner { display: flex; align-items: center; justify-content: space-between; padding-block: 16px; gap: var(--gap-lg); }
+    .topnav .logo { font-family: var(--font-display); font-size: 19px; font-weight: 800; letter-spacing: -0.01em; }
+    .topnav .logo small { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--muted); margin-left: 8px; font-weight: 500; }
+    .topnav nav { display: flex; gap: var(--gap-lg); flex-wrap: wrap; }
+    .topnav nav a { font-size: 14px; color: var(--fg-2); transition: color var(--motion-fast) var(--ease-standard); }
+    .topnav nav a:hover { color: var(--fg); }
+    .topnav nav a small { display: block; font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
+    @media (max-width: 720px) { .topnav nav { display: none; } }
+
+    .pagefoot { padding-block: var(--gap-xl); color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); }
+    .pagefoot .row-between { flex-wrap: wrap; gap: var(--gap-md); }
+
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: var(--radius); border: 1px solid transparent; font-size: 15px; font-weight: 600; transition: transform var(--motion-fast) var(--ease-standard), background var(--motion-fast) var(--ease-standard), border-color var(--motion-fast) var(--ease-standard), color var(--motion-fast) var(--ease-standard); }
+    .btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: var(--accent); color: var(--accent-on); border-color: var(--accent); }
+    .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+    .btn-secondary { background: transparent; color: var(--fg); border-color: var(--border); }
+    .btn-secondary:hover { border-color: var(--fg); }
+    .btn-ghost { background: transparent; color: var(--fg); border-color: transparent; padding-inline: 8px; }
+    .btn-ghost:hover { color: var(--accent); }
+    .btn-arrow::after { content: '→'; transition: transform var(--motion-fast) var(--ease-standard); }
+    .btn-arrow:hover::after { transform: translateX(3px); }
+    .btn-sm { padding: 8px 14px; font-size: 13px; }
+
+    .pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; background: var(--surface-warm); color: var(--accent); border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; }
+    .tag { display: inline-flex; align-items: center; padding: 4px 10px; background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: var(--radius-pill); font-size: 12px; font-family: var(--font-mono); letter-spacing: 0.04em; }
+
+    .ph-img { background: linear-gradient(135deg, var(--accent-soft), var(--fg-soft)), var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); aspect-ratio: 16 / 10; display: grid; place-items: center; color: var(--muted); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    .hero { padding-block: clamp(72px, 11vw, 156px); position: relative; overflow: hidden; }
+    .hero-split { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--gap-2xl); align-items: center; }
+    @media (max-width: 920px) { .hero-split { grid-template-columns: 1fr; gap: var(--gap-xl); } }
+    .hero h1 { margin-bottom: var(--gap-md); }
+    .hero .lead { margin-bottom: var(--gap-lg); }
+    .hero-cta { display: inline-flex; gap: var(--gap-sm); flex-wrap: wrap; }
+    .hero-marks { display: flex; gap: var(--gap-md); align-items: center; margin-top: var(--gap-xl); padding-top: var(--gap-md); border-top: 1px solid var(--border); }
+    .hero-photo { aspect-ratio: 4 / 5; background: radial-gradient(120% 80% at 80% 0%, color-mix(in oklch, var(--accent) 18%, transparent), transparent 60%), linear-gradient(180deg, var(--surface), color-mix(in oklch, var(--accent) 6%, var(--surface))); border: 1px solid var(--border); border-radius: var(--radius-lg); position: relative; overflow: hidden; }
+    .hero-photo::after { content: 'ARTIST PORTRAIT · [REPLACE]'; position: absolute; left: 0; right: 0; bottom: 18px; text-align: center; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; color: var(--muted); }
+    .hero-photo .stamp { position: absolute; top: 18px; left: 18px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; color: var(--accent); text-transform: uppercase; }
+    .hero-photo .kanji { position: absolute; right: -8px; bottom: 28px; font-family: var(--font-display); font-size: clamp(110px, 18vw, 220px); line-height: 0.85; font-weight: 800; color: var(--fg); opacity: 0.06; letter-spacing: -0.04em; }
+
+    .release-cover { position: relative; aspect-ratio: 1 / 1; border-radius: var(--radius-lg); overflow: hidden; background: radial-gradient(80% 80% at 30% 30%, color-mix(in oklch, var(--accent) 35%, transparent), transparent 65%), linear-gradient(160deg, var(--fg) 0%, color-mix(in oklch, var(--fg) 80%, var(--accent)) 100%); color: var(--accent-on); box-shadow: var(--elev-raised); }
+    .release-cover::after { content: 'ALBUM ART · [REPLACE]'; position: absolute; bottom: 18px; left: 0; right: 0; text-align: center; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; color: color-mix(in oklch, var(--accent-on) 65%, transparent); }
+    .release-cover .cover-mark { position: absolute; top: 28px; left: 28px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: color-mix(in oklch, var(--accent-on) 80%, transparent); }
+    .release-cover .cover-title { position: absolute; right: 28px; bottom: 56px; left: 28px; font-family: var(--font-display); font-size: clamp(36px, 5.6vw, 64px); font-weight: 800; letter-spacing: -0.02em; line-height: 0.95; text-align: right; }
+    .release-cover .cover-en { position: absolute; right: 28px; bottom: 28px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: color-mix(in oklch, var(--accent-on) 70%, transparent); }
+
+    .tracklist { border-top: 1px solid var(--border); }
+    .tracklist .track { display: grid; grid-template-columns: 32px 1fr auto; align-items: baseline; gap: var(--gap-md); padding: 16px 0; border-bottom: 1px solid var(--border); }
+    .tracklist .track-no { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--muted); font-size: 13px; letter-spacing: 0.04em; }
+    .tracklist .track-title { font-weight: 600; font-size: 16px; }
+    .tracklist .track-title small { display: block; font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; font-weight: 400; }
+    .tracklist .track-time { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--muted); font-size: 13px; }
+
+    .stream-row { display: flex; flex-wrap: wrap; gap: var(--gap-sm); margin-top: var(--gap-lg); }
+    .stream-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--fg); font-size: 13px; font-weight: 600; transition: border-color var(--motion-fast) var(--ease-standard), color var(--motion-fast) var(--ease-standard), background var(--motion-fast) var(--ease-standard); }
+    .stream-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--bg); }
+    .stream-btn .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+    .stream-btn .arrow { font-family: var(--font-mono); color: var(--muted); transition: transform var(--motion-fast) var(--ease-standard); }
+    .stream-btn:hover .arrow { transform: translate(2px, -2px); color: var(--accent); }
+
+    .log-row { display: grid; grid-template-columns: 120px 1fr 140px 100px; gap: var(--gap-lg); padding: 26px 0; border-top: 1px solid var(--border); align-items: baseline; transition: background var(--motion-fast) var(--ease-standard); }
+    .log-row:hover { background: var(--surface); }
+    .log-row .pull { text-align: right; }
+    .log-row h3 { font-size: 19px; margin: 0; }
+    .log-row h3 small { display: block; font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; font-weight: 400; }
+    @media (max-width: 920px) { .log-row { grid-template-columns: 90px 1fr; row-gap: 6px; } .log-row .pull, .log-row .format-col { grid-column: 2; text-align: left; } }
+
+    .gallery-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: var(--gap-md); grid-template-areas: "lead a b" "lead c d"; }
+    .gallery-grid .ph-img:nth-child(1) { grid-area: lead; aspect-ratio: auto; }
+    .gallery-grid .ph-img:nth-child(2) { grid-area: a; aspect-ratio: auto; }
+    .gallery-grid .ph-img:nth-child(3) { grid-area: b; aspect-ratio: auto; }
+    .gallery-grid .ph-img:nth-child(4) { grid-area: c; aspect-ratio: auto; }
+    .gallery-grid .ph-img:nth-child(5) { grid-area: d; aspect-ratio: auto; }
+    .gallery-grid .ph-img { min-height: 200px; }
+    @media (max-width: 920px) { .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; grid-template-areas: none; } .gallery-grid .ph-img { grid-area: auto; min-height: 180px; aspect-ratio: 4/5; } .gallery-grid .ph-img:nth-child(1) { grid-column: 1 / -1; aspect-ratio: 16/10; } }
+
+    .social-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap-md); margin-top: var(--gap-xl); }
+    @media (max-width: 720px) { .social-grid { grid-template-columns: repeat(2, 1fr); } }
+    .social-card { display: flex; flex-direction: column; justify-content: space-between; gap: var(--gap-md); padding: 22px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); min-height: 140px; transition: border-color var(--motion-fast) var(--ease-standard), transform var(--motion-fast) var(--ease-standard); }
+    .social-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .social-card .platform { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+    .social-card .handle { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+    .social-card .followers { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+    .social-card .arrow { font-family: var(--font-mono); color: var(--accent); }
+
+    .contact-card { margin-top: var(--gap-xl); padding: 36px; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--bg); display: grid; grid-template-columns: 1fr auto; gap: var(--gap-lg); align-items: center; }
+    @media (max-width: 720px) { .contact-card { grid-template-columns: 1fr; } }
+    .contact-card h3 { font-family: var(--font-display); font-size: 24px; font-weight: 700; }
+    .contact-card .contact-meta { color: var(--muted); margin-top: 4px; font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.04em; }
+
+    .about-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--gap-xl); align-items: start; }
+    @media (max-width: 920px) { .about-grid { grid-template-columns: 1fr; gap: var(--gap-lg); } }
+    .about-body p { margin: 0 0 18px; font-size: 17px; line-height: 1.62; color: var(--fg-2); max-width: 60ch; }
+    .about-body p strong { color: var(--fg); font-weight: 600; }
+    .about-body .jp-line { font-family: var(--font-display); font-size: 15px; color: var(--muted); margin-top: 32px; padding-top: 18px; border-top: 1px solid var(--border); letter-spacing: 0.04em; }
+    .profile-card { padding: 32px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); position: relative; overflow: hidden; }
+    .profile-card .kanji-bg { position: absolute; right: -20px; top: -30px; font-family: var(--font-display); font-size: 220px; line-height: 1; font-weight: 800; color: var(--fg); opacity: 0.05; letter-spacing: -0.04em; pointer-events: none; }
+    .profile-card .row-stat { display: grid; grid-template-columns: 110px 1fr; gap: var(--gap-md); padding: 14px 0; border-top: 1px solid var(--border); align-items: baseline; position: relative; }
+    .profile-card .row-stat:first-of-type { border-top: none; padding-top: 4px; }
+    .profile-card .row-stat .label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+    .profile-card .row-stat .value { font-size: 15px; color: var(--fg); font-weight: 500; }
+    .profile-card .row-stat .value small { display: block; font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.06em; margin-top: 2px; font-weight: 400; text-transform: uppercase; }
+    .profile-card .quote { margin-bottom: 24px; font-family: var(--font-display); font-size: 22px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; position: relative; }
+    .profile-card .quote::before { content: '"'; position: absolute; left: -8px; top: -16px; font-size: 60px; color: var(--accent); opacity: 0.5; line-height: 1; }
+    .profile-card .quote-sub { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+  <header class="topnav" data-od-id="topnav">
+    <div class="container topnav-inner">
+      <span class="logo">Rentaro<small class="jp">連太郎</small></span>
+      <nav>
+        <a href="#about">About<small>アバウト</small></a>
+        <a href="#latest">Latest<small>最新作</small></a>
+        <a href="#music">Music<small>音楽</small></a>
+        <a href="#gallery">Photos<small>写真</small></a>
+        <a href="#contact">Contact<small>連絡</small></a>
+      </nav>
+      <a href="#latest" class="btn btn-primary btn-sm">Listen</a>
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="section hero" data-od-id="hero">
+      <div class="container hero-split">
+        <div>
+          <p class="eyebrow">SINGER · HOBBY ARTIST · SELF-PRODUCED · 2026</p>
+          <h1>Just for the fun<br/>of making music.<span class="en-sub jp">音楽を作るのが、ただ好き。</span></h1>
+          <p class="lead" style="margin-top: 24px;">Rentaro — also known as Nicart. 28 years old. A hobby artist chasing one thing: the pure joy of writing songs and bringing them to life. Self-produced from lyric to release, weaving pop, rock and ballads into borderless, multilingual songs that slip quietly into everyday life.</p>
+          <div class="hero-cta" style="margin-top: 32px;">
+            <a href="#latest" class="btn btn-primary">Listen to the new EP</a>
+            <a href="#music" class="btn btn-secondary btn-arrow">View discography</a>
+          </div>
+          <div class="hero-marks">
+            <span class="pill">NEW EP</span>
+            <span class="meta">RELEASED · 2026.0X.XX</span>
+            <span class="meta" style="margin-left:auto;">FUN FIRST</span>
+          </div>
+        </div>
+        <div class="hero-photo" aria-label="Artist portrait placeholder">
+          <span class="stamp">PORTRAIT · 01</span>
+          <span class="kanji jp">連</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" data-od-id="about" id="about">
+      <div class="container">
+        <div style="margin-bottom: 56px; max-width: 56ch;">
+          <p class="eyebrow">ABOUT · プロフィール</p>
+          <h2>Hobby artist. Fun first.<span class="en-sub jp">等身大の音楽 — by Rentaro</span></h2>
+        </div>
+        <div class="about-grid">
+          <div class="about-body">
+            <p><strong>Rentaro (Nicart)</strong> is a 28-year-old singer and self-producer chasing one thing only — the pure joy of making music. He pours his energy into writing lyrics, then uses modern software and virtual instruments to give those words a melody and a voice. Every release happens at his own pace, on his own terms.</p>
+            <p>Free from commercial rules or genre boundaries, he moves easily between pop, rock, ballads and anything else that sounds right that week. His lyrics weave several languages into a borderless sound — songs that don't ask to be the centre of attention, but settle naturally into everyday life.</p>
+            <p>He doesn't chase numbers or charts. He chases <strong>Fun</strong> — songs that catch your ear and make the day feel a little lighter. That, more than anything, is what keeps the music coming.</p>
+            <p class="jp-line jp">商業的な枠組みに囚われず、マイペースに音楽を作り続ける。「Fun（楽しさ）」を最優先に、ジャンルや国境に囚われない自由なセンスで、独自の音楽世界をのびのびと拡大している。</p>
+          </div>
+          <aside class="profile-card">
+            <span class="kanji-bg jp" aria-hidden="true">連</span>
+            <p class="quote-sub">PHILOSOPHY</p>
+            <p class="quote">Fun comes first — everything else can wait.</p>
+            <div class="row-stat">
+              <span class="label">Name</span>
+              <span class="value">Rentaro <small class="jp">連太郎 · also Nicart / ニカート</small></span>
+            </div>
+            <div class="row-stat">
+              <span class="label">Age</span>
+              <span class="value num">28</span>
+            </div>
+            <div class="row-stat">
+              <span class="label">Role</span>
+              <span class="value">Singer · Lyricist · Self-producer</span>
+            </div>
+            <div class="row-stat">
+              <span class="label">Approach</span>
+              <span class="value">Hobby artist, own pace<small>No labels, no rules, no schedule</small></span>
+            </div>
+            <div class="row-stat">
+              <span class="label">Sound</span>
+              <span class="value">Pop · Rock · J-Pop · Ballad<small>Borderless, multilingual lyrics</small></span>
+            </div>
+            <div class="row-stat">
+              <span class="label">Tools</span>
+              <span class="value">Modern DAWs & virtual instruments<small>Lyric → melody → voice, all in-house</small></span>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" data-od-id="latest" id="latest">
+      <div class="container">
+        <div class="row-between" style="margin-bottom: 56px; align-items: flex-end;">
+          <div>
+            <p class="eyebrow">LATEST RELEASE · 2026</p>
+            <h2>New EP<span class="en-sub jp">最新作 · Out now on all streaming services</span></h2>
+          </div>
+          <span class="meta">5 TRACKS · 18:42</span>
+        </div>
+        <div class="grid-1-2">
+          <div class="release-cover" aria-label="Album cover placeholder">
+            <span class="cover-mark">EP / 2026</span>
+            <div class="cover-title">[Album]<br/>Title</div>
+            <span class="cover-en">RENTARO · EP 04</span>
+          </div>
+          <div>
+            <div class="row" style="gap: var(--gap-sm); margin-bottom: var(--gap-md); flex-wrap: wrap;">
+              <span class="tag">EP</span>
+              <span class="tag">5 SONGS</span>
+              <span class="tag">SELF-PRODUCED</span>
+              <span class="tag">2026.0X.XX</span>
+            </div>
+            <h3 style="font-family: var(--font-display); font-size: 32px; font-weight: 800; letter-spacing: -0.015em; line-height: 1.1;">[REPLACE — Album Title]</h3>
+            <p class="lead" style="margin-top: 16px;">Rentaro's fourth EP — five songs that move between pop, rock and ballad without breaking pace. Written, sung and produced entirely by Rentaro at his own studio. <span class="jp" style="color: var(--muted);">プロデュース・録音：連太郎</span></p>
+            <div class="tracklist" style="margin-top: 32px;">
+              <div class="track"><span class="track-no num">01</span><div class="track-title">[REPLACE — Track Title 01] <small class="jp">曲名 · Original title</small></div><span class="track-time num">3:42</span></div>
+              <div class="track"><span class="track-no num">02</span><div class="track-title">[REPLACE — Track Title 02] <small class="jp">曲名 · Original title</small></div><span class="track-time num">4:08</span></div>
+              <div class="track"><span class="track-no num">03</span><div class="track-title">[REPLACE — Track Title 03] <small class="jp">曲名 · Original title</small></div><span class="track-time num">3:55</span></div>
+              <div class="track"><span class="track-no num">04</span><div class="track-title">[REPLACE — Track Title 04] <small class="jp">曲名 · Original title</small></div><span class="track-time num">3:20</span></div>
+              <div class="track"><span class="track-no num">05</span><div class="track-title">[REPLACE — Track Title 05] <small class="jp">曲名 · Original title</small></div><span class="track-time num">3:37</span></div>
+            </div>
+            <div class="stream-row">
+              <a href="#" class="stream-btn" target="_blank" rel="noopener"><span class="dot"></span> Spotify <span class="arrow">↗</span></a>
+              <a href="#" class="stream-btn" target="_blank" rel="noopener"><span class="dot"></span> Apple Music <span class="arrow">↗</span></a>
+              <a href="#" class="stream-btn" target="_blank" rel="noopener"><span class="dot"></span> YouTube Music <span class="arrow">↗</span></a>
+              <a href="#" class="stream-btn" target="_blank" rel="noopener"><span class="dot"></span> LINE MUSIC <span class="arrow">↗</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" data-od-id="music" id="music">
+      <div class="container">
+        <div class="row-between" style="margin-bottom: 40px; align-items: flex-end;">
+          <div>
+            <p class="eyebrow">DISCOGRAPHY · JP + TL</p>
+            <h2 class="jp">作品一覧<span class="en-sub">All releases · Japanese & Tagalog · 2022 → 2026</span></h2>
+          </div>
+          <a href="#" class="btn btn-ghost btn-arrow">すべて見る · View all</a>
+        </div>
+        <div>
+          <article class="log-row">
+            <span class="meta num">2026.0X</span>
+            <div><h3 class="jp">[REPLACE — 最新EPタイトル] <small>Latest EP · JP + TL — title (EN)</small></h3></div>
+            <span class="format-col tag">EP · 5 SONGS</span>
+            <span class="pull"><span class="pill">NEW</span></span>
+          </article>
+          <article class="log-row">
+            <span class="meta num">2025.10</span>
+            <div><h3 lang="tl">[REPLACE — Pamagat ng Single] <small>TL · Tagalog single — title (EN)</small></h3></div>
+            <span class="format-col tag">SINGLE · TL</span>
+            <span class="pull meta">DIGITAL</span>
+          </article>
+          <article class="log-row">
+            <span class="meta num">2025.04</span>
+            <div><h3 class="jp">[REPLACE — 1st フルアルバム] <small>JP · 1st full album — title (EN)</small></h3></div>
+            <span class="format-col tag">ALBUM · 11 SONGS</span>
+            <span class="pull meta">CD + DIGITAL</span>
+          </article>
+          <article class="log-row">
+            <span class="meta num">2024.11</span>
+            <div><h3 lang="tl">[REPLACE — Pamagat ng EP] <small>TL · Tagalog EP — title (EN)</small></h3></div>
+            <span class="format-col tag">EP · 5 SONGS · TL</span>
+            <span class="pull meta">DIGITAL</span>
+          </article>
+          <article class="log-row">
+            <span class="meta num">2024.08</span>
+            <div><h3 class="jp">[REPLACE — シングル名] <small>JP · Single — title (EN)</small></h3></div>
+            <span class="format-col tag">SINGLE</span>
+            <span class="pull meta">DIGITAL</span>
+          </article>
+          <article class="log-row">
+            <span class="meta num">2023.11</span>
+            <div><h3 class="jp">[REPLACE — 2nd EP] <small>JP · 2nd EP — title (EN)</small></h3></div>
+            <span class="format-col tag">EP · 6 SONGS</span>
+            <span class="pull meta">DIGITAL</span>
+          </article>
+          <article class="log-row">
+            <span class="meta num">2023.03</span>
+            <div><h3 lang="tl">[REPLACE — Pamagat ng Single] <small>TL · Debut Tagalog single — title (EN)</small></h3></div>
+            <span class="format-col tag">SINGLE · TL</span>
+            <span class="pull meta">DIGITAL</span>
+          </article>
+          <article class="log-row">
+            <span class="meta num">2022.06</span>
+            <div><h3 class="jp">[REPLACE — デビューEP] <small>JP · Debut EP — title (EN)</small></h3></div>
+            <span class="format-col tag">EP · 4 SONGS</span>
+            <span class="pull meta">DIGITAL</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" data-od-id="gallery" id="gallery">
+      <div class="container">
+        <div style="margin-bottom: 48px;">
+          <p class="eyebrow">PHOTOS · LIVE & STUDIO</p>
+          <h2 class="jp">写真<span class="en-sub">Photos — recent live & studio sessions</span></h2>
+        </div>
+        <div class="gallery-grid">
+          <div class="ph-img" aria-label="Live photo · main">LIVE · MAIN [REPLACE]</div>
+          <div class="ph-img" aria-label="Live photo">STAGE · 02 [REPLACE]</div>
+          <div class="ph-img" aria-label="Studio photo">STUDIO · 03 [REPLACE]</div>
+          <div class="ph-img" aria-label="Portrait">PORTRAIT · 04 [REPLACE]</div>
+          <div class="ph-img" aria-label="Backstage">BACKSTAGE · 05 [REPLACE]</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" data-od-id="contact" id="contact">
+      <div class="container">
+        <div style="max-width: 36ch;">
+          <p class="eyebrow">SOCIALS · CONTACT</p>
+          <h2 class="jp">つながる<span class="en-sub">Find Rentaro online</span></h2>
+        </div>
+        <div class="social-grid">
+          <a href="#" class="social-card" target="_blank" rel="noopener">
+            <span class="platform">Instagram</span>
+            <div><div class="handle">@rentaro</div><div class="followers">[REPLACE] followers</div></div>
+            <span class="arrow">↗</span>
+          </a>
+          <a href="#" class="social-card" target="_blank" rel="noopener">
+            <span class="platform">X / Twitter</span>
+            <div><div class="handle">@rentaro</div><div class="followers">[REPLACE] followers</div></div>
+            <span class="arrow">↗</span>
+          </a>
+          <a href="#" class="social-card" target="_blank" rel="noopener">
+            <span class="platform">YouTube</span>
+            <div><div class="handle">Rentaro Channel</div><div class="followers">[REPLACE] subscribers</div></div>
+            <span class="arrow">↗</span>
+          </a>
+          <a href="#" class="social-card" target="_blank" rel="noopener">
+            <span class="platform">TikTok</span>
+            <div><div class="handle">@rentaro_official</div><div class="followers">[REPLACE] followers</div></div>
+            <span class="arrow">↗</span>
+          </a>
+        </div>
+        <div class="contact-card">
+          <div>
+            <h3 class="jp">お仕事のご依頼<span style="display:block; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); font-weight:500; margin-top:8px;">Business inquiries · press · live booking</span></h3>
+            <p class="contact-meta">[REPLACE] contact@rentaro-official.jp</p>
+          </div>
+          <a href="mailto:[REPLACE]" class="btn btn-primary">メールで連絡 · Send email</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pagefoot" data-od-id="footer">
+    <div class="container row-between">
+      <span class="jp">© 連太郎 / Rentaro · 2026</span>
+      <span class="meta">SINGER · TOKYO · JP / TL · J-POP · OPM</span>
+    </div>
+  </footer>
+</body>
+</html>
