@@ -1,0 +1,11 @@
+{
+  // Cloudflare Workers — static-assets-only deploy.
+  // `npm run build` produces dist/, and this config uploads it verbatim.
+  // No Worker script (`main`) and no Vite plugin are needed for a static site.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "rentaro",
+  "compatibility_date": "2026-06-13",
+  "assets": {
+    "directory": "./dist"
+  }
+}
