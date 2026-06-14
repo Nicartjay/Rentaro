@@ -55,115 +55,36 @@ const prefersReduced =
   })
 })()
 
-/* ── Hero parallax: slab + glass panels drift on scroll ──────────── */
+/* ── Hero parallax: foreground railing + glass panels drift on scroll ── */
 ;(function () {
-  const slab = document.getElementById('slab')
+  const rail = document.getElementById('rail')
   const panels = document.getElementById('panels')
   const isMobile = () => window.innerWidth < 768
   if (prefersReduced) return
 
   function onScroll() {
     const y = window.scrollY || window.pageYOffset
-    if (slab) slab.style.transform = 'translateX(-50%) translateY(' + (-10 - y * 0.3) + 'px)'
+    // The railing is the nearest layer, so it drifts down fastest as the hero scrolls up.
+    if (rail) rail.style.transform = 'translateY(' + y * 0.16 + 'px)'
     if (panels && !isMobile()) panels.style.bottom = 36 + y * 0.5 + 'px'
   }
   window.addEventListener('scroll', onScroll, { passive: true })
   onScroll()
 })()
 
-/* ── Birds: enter → idle loop → leave-on-scroll state machine ────── */
+/* ── Cat: settle onto the railing on load, slip away on scroll ────── */
 ;(function () {
-  const enter = document.getElementById('bird-enter')
-  const idle1 = document.getElementById('bird-idle1')
-  const idle2 = document.getElementById('bird-idle2')
-  const leave = document.getElementById('bird-leave')
-  if (!enter) return
-
-  const all = [enter, idle1, idle2, leave]
-  const stateRef = { v: 'hidden' }
-
-  if (prefersReduced) {
-    all.forEach((v) => {
-      try {
-        v.pause()
-        v.style.display = 'none'
-      } catch (e) {}
-    })
-    return
-  }
-
-  all.forEach((v) => {
-    try {
-      v.load()
-    } catch (e) {}
-  })
-
-  function show(el) {
-    all.forEach((v) => {
-      v.style.display = v === el ? 'block' : 'none'
-    })
-  }
-  function playVideo(el) {
-    if (!el) return
-    try {
-      el.currentTime = 0
-      if (el.readyState >= 2) {
-        const p = el.play()
-        if (p && p.catch) p.catch(() => {})
-      } else {
-        el.addEventListener('canplay', function once() {
-          el.removeEventListener('canplay', once)
-          const p = el.play()
-          if (p && p.catch) p.catch(() => {})
-        })
-      }
-    } catch (e) {}
-  }
-  function go(next) {
-    stateRef.v = next
-    if (next === 'hidden') {
-      show(null)
-      return
-    }
-    const map = { enter, idle1, idle2, leave }
-    show(map[next])
-    playVideo(map[next])
-  }
-
-  enter.addEventListener('ended', () => {
-    if (stateRef.v === 'enter') go('idle1')
-  })
-  idle1.addEventListener('ended', () => {
-    if (stateRef.v === 'idle1') go('idle2')
-  })
-  idle2.addEventListener('ended', () => {
-    if (stateRef.v === 'idle2') go('idle1')
-  })
-
-  go('enter')
+  const cat = document.getElementById('cat')
+  if (!cat) return
+  // Settle in on the next frame so the enter transition runs (instant under reduced-motion).
+  requestAnimationFrame(() => cat.classList.add('is-in'))
 
   const THRESH = 10
   window.addEventListener(
     'scroll',
     () => {
       const y = window.scrollY || window.pageYOffset
-      if (y > THRESH) {
-        if (stateRef.v !== 'leave') {
-          ;[enter, idle1, idle2].forEach((v) => {
-            try {
-              v.pause()
-              v.currentTime = 0
-            } catch (e) {}
-          })
-          go('leave')
-        }
-      } else if (stateRef.v === 'leave') {
-        try {
-          leave.pause()
-          leave.currentTime = 0
-        } catch (e) {}
-        go('enter')
-      }
+      cat.classList.toggle('is-out', y > THRESH)
     },
     { passive: true }
   )

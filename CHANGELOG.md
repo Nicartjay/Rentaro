@@ -4,6 +4,22 @@ All notable changes to this project are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); this project does not yet use formal
 semantic versioning.
 
+## [1.6.0] — 2026-06-14
+
+### Changed
+- **Reimagined the hero foreground.** The flying birds and the rock "slab" (both
+  hot-linked `.webm`/`.webp` from a third-party CDN) are replaced by a **foreground
+  railing with the resident cat perched on it** — fitting the cat-mascot brand. Both are
+  drawn entirely in **inline SVG + CSS** (no external assets), so the hero now depends on
+  the CDN only for the two background videos.
+  - Railing: CSS handrail + repeating balusters + base, drifting with the existing hero
+    parallax (`#rail`).
+  - Cat (`#cat`): an ink silhouette with glowing mint eyes that settles onto the rail on
+    load, idles with a gentle bob, tail-sway and blink, and slips away on scroll —
+    replacing the old four-clip bird state machine with a few CSS classes.
+- Reduced-motion: the cat is shown statically (no idle, no parallax); the JS bird
+  state-machine (~50 lines) is gone, trimming the JS bundle.
+
 ## [1.5.0] — 2026-06-14
 
 A frontend audit-and-fix pass: real bugs, accessibility, mobile layout and share/SEO.

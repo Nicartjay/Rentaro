@@ -81,8 +81,8 @@ SSL is automatic on the managed hosts; on nginx use Let's Encrypt (`certbot`).
 The page loads a few things from third-party CDNs at runtime (not bundled):
 
 - **Fonts** — "Zimula Trial" (onlinewebfonts.com) and Noto Serif JP (Google Fonts).
-- **Hero media** — the background videos, bird clips and slab image
-  (`plugin-assets.open-design.ai`).
+- **Hero media** — the two background videos (`plugin-assets.open-design.ai`). The
+  foreground railing and the perched cat are inline SVG/CSS, not external assets.
 
 These must be reachable over **HTTPS** from the visitor's browser. If you want a fully
 self-hosted, offline-proof build, download those assets into `public/` and update the
@@ -95,7 +95,7 @@ editing the font `<link>` tags in `index.html` and the `--font-*` variables in
 
 ## Post-deploy smoke test
 
-1. Load `https://rentaro.nicart.space` — hero video plays, birds animate.
+1. Load `https://rentaro.nicart.space` — hero video plays; the cat settles onto the railing.
 2. Scroll: nav pills highlight the section in view; content sections render dark.
 3. Click each streaming button → opens the right platform in a new tab.
 4. Narrow the window to phone width: nav collapses to the burger; grids stack.

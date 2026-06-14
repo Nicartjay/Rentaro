@@ -143,10 +143,13 @@ Find the `<!-- ABOUT -->` section (`id="about"`):
 ## 7. Hero & headline copy
 
 The top of the page (the video hero and the "melts into the everyday" headline) lives in
-the `<!-- HERO -->` and `<!-- SECTION 2 -->` blocks. The big background video, the bird
-animation and the central slab are **decorative theme assets** loaded from a CDN — they
-aren't photos of the artist, so you can leave them as-is. To change the poetic copy, edit
-the text inside `.panel-left__head`, `.panel-right__top`, and the `<h2>` in `.sec2`.
+the `<!-- HERO -->` and `<!-- SECTION 2 -->` blocks. The big background video is a
+**decorative theme asset** loaded from a CDN; the foreground **railing** and the perched
+**cat** are drawn entirely in inline SVG/CSS (no external files) — the cat is `#cat` and
+the rail is `#rail` in `index.html`, styled under "Foreground railing + perched cat" in
+`src/style.css`. These are decorative, so you can leave them as-is. To change the poetic
+copy, edit the text inside `.panel-left__head`, `.panel-right__top`, and the `<h2>` in
+`.sec2`.
 
 ---
 

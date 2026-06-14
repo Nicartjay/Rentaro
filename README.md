@@ -45,7 +45,7 @@ Requires **Node 18+** (Vite 6). That's the only prerequisite.
 ├── index.html          # markup — landing hero + sec2, then .content detail sections
 ├── src/
 │   ├── style.css        # all styles (landing theme verbatim + warm-light content sections)
-│   ├── main.js          # behaviors: burger menu, hero parallax, birds, scroll-spy, player
+│   ├── main.js          # behaviors: burger menu, hero parallax, cat, scroll-spy, player
 │   └── tracks.js        # auto-generated track data (titles, covers, 30s preview URLs)
 ├── public/
 │   ├── favicon.svg       # 連 favicon (served at /favicon.svg)

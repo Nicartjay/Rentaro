@@ -12,7 +12,7 @@ The site combines two source designs (kept verbatim in `template/` for reference
 
 | Source | Role in the final site |
 | --- | --- |
-| `rentaro-layered-landing.html` | The **theme** — cinematic hero (background video, animated birds, parallax slab, glass nav + panels) and the full-bleed "section 2" headline. Kept visually as-is. |
+| `rentaro-layered-landing.html` | The **theme** — cinematic hero (background video, a parallax foreground railing with the resident cat perched on it, glass nav + panels) and the full-bleed "section 2" headline. The original template's flying birds and rock slab were swapped for the railing + cat (inline SVG/CSS, no external assets); the template file keeps the originals for reference. |
 | `rentaro-artist-site.html` | The **detail** — About/profile, Latest release, Discography, Photos, Contact. A warm-light design, harmonized with the landing's palette and type. |
 
 The page reads top-to-bottom as: **landing hero → section 2 → detail sections →
@@ -72,8 +72,8 @@ respects `prefers-reduced-motion`.
 | Behavior | What it does |
 | --- | --- |
 | **Burger menu** | Toggles the mobile menu; syncs `aria-expanded`; moves focus into the menu on open and back to the button on close/**Escape**; traps Tab between the links and the button while open. |
-| **Hero parallax** | On scroll, drifts the slab image and the glass panels (desktop only, passive listener). Disabled under reduced-motion. |
-| **Birds state machine** | `enter → idle1 ⇄ idle2` loop; on scroll past a small threshold plays `leave`, and returns to `enter` at the top. Pauses/hides under reduced-motion. |
+| **Hero parallax** | On scroll, drifts the foreground railing (`#rail`) and the glass panels (desktop only, passive listener). Disabled under reduced-motion. |
+| **Cat** | The cat (`#cat`, inline SVG) settles onto the railing on load (`is-in`), idles with a CSS bob/tail-sway/blink, and slips away on scroll past a small threshold (`is-out`), returning at the top. Shown statically (no idle/parallax) under reduced-motion. |
 | **Scroll-spy** | An `IntersectionObserver` highlights the nav pill (`[data-spy]`) for the section currently in view. Degrades gracefully if `IntersectionObserver` is missing. |
 | **Preview player** | A sticky bottom bar driving an `<audio>` element through the `TRACKS` queue in `src/tracks.js`. Play triggers (`[data-qi]`) on discography rows + the Latest tracklist set the index; prev/next/`ended` advance with wraparound; the playing release row is highlighted via `data-rel`. Plays Apple Music 30-second previews. Closing resets the index (so re-clicking the same row re-opens the bar) and restores focus to the trigger button; a row click toggles play/pause when it belongs to the currently-playing release; an `error` listener surfaces "Preview unavailable" for expired URLs; an `aria-live` region + `aria-valuetext` announce track and seek changes. |
 

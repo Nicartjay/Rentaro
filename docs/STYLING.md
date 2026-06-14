@@ -100,8 +100,8 @@ Declared on `.content`:
 | `≤ 720px` | social grid, contact card, **and gallery** go single-column; release cover capped at 420px |
 
 `.hero` uses `overflow: clip` (with `overflow: hidden` declared first as a fallback for
-Safari < 16) so the oversized slab (160–220vw) can never cause horizontal scrolling on
-mobile. Full-height landing blocks (`.hero`, `.sec2` and the hero layers) declare `100vh`
+Safari < 16) so the slightly over-wide foreground railing can never cause horizontal
+scrolling on mobile. Full-height landing blocks (`.hero`, `.sec2` and the hero layers) declare `100vh`
 then `100dvh`, so they match the *visible* viewport under a mobile browser's URL bar.
 `html` sets `scroll-padding-top: 88px` so in-page anchor jumps clear the fixed nav.
 
