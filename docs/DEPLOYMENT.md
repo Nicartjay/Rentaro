@@ -95,7 +95,8 @@ editing the font `<link>` tags in `index.html` and the `--font-*` variables in
 
 ## Post-deploy smoke test
 
-1. Load `https://rentaro.nicart.space` — hero video plays; the cat settles onto the railing.
+1. Load `https://rentaro.nicart.space` — the cat-loader intro plays, then the hero video
+   plays and the railing cat walks toward the cursor (and sits when it reaches it).
 2. Scroll: nav pills highlight the section in view; content sections render dark.
 3. Click each streaming button → opens the right platform in a new tab.
 4. Narrow the window to phone width: nav collapses to the burger; grids stack.
