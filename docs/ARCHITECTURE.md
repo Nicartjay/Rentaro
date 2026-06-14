@@ -72,7 +72,7 @@ a section never throws). All of it respects `prefers-reduced-motion`.
 
 | Behavior | What it does |
 | --- | --- |
-| **First-load intro** (`src/intro.js`) | A full-screen overlay (`#intro`) where a cat bats the **連太郎** logo around then bounds off, revealing the site. GSAP timeline adapted from CodePen WLGaJK. Runs **once per browser session** (sessionStorage), is skippable (click / Esc) with a safety timeout, and is skipped entirely under `prefers-reduced-motion` or with JS disabled. |
+| **First-load intro** (`src/intro.js`) | A full-screen overlay (`#intro`) where a cat bats the **連太郎** logo around then bounds off, revealing the site. GSAP timeline adapted from CodePen WLGaJK. Runs **on every page load**, is skippable (click / Esc) with a safety timeout, and is skipped entirely under `prefers-reduced-motion` or with JS disabled. |
 | **Burger menu** | Toggles the mobile menu; syncs `aria-expanded`; moves focus into the menu on open and back to the button on close/**Escape**; traps Tab between the links and the button while open. |
 | **Hero parallax** | On scroll, drifts the foreground railing (`#rail`) and the glass panels (desktop only, passive listener). Disabled under reduced-motion. |
 | **Cat** | The cat (`#cat`, inline SVG) settles onto the railing on load (`is-in`), then **walks** back and forth along it — a CSS-only four-leg diagonal gait, body bob, swaying tail and a quick mirror-turn at each end — and slips away on scroll past a small threshold (`is-out`), returning at the top. Stands still (no walk/parallax) under reduced-motion. |

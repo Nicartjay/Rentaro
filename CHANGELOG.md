@@ -13,9 +13,9 @@ semantic versioning.
   rebranded to our logo and ending by fading into the real page (`src/intro.js`,
   `#intro` overlay).
   - Powered by **GSAP** (`npm i gsap`) — bundled, not loaded from a CDN.
-  - Shown **once per browser session** (sessionStorage); **skippable** by clicking or
-    pressing Esc, with a safety timeout so a visitor is never trapped; **skipped entirely**
-    under `prefers-reduced-motion` and when JavaScript is disabled (`<noscript>`).
+  - Shown on **every page load**; **skippable** by clicking or pressing Esc, with a safety
+    timeout so a visitor is never trapped; **skipped entirely** under
+    `prefers-reduced-motion` and when JavaScript is disabled (`<noscript>`).
   - Hero-cat CSS was scoped under `.hero__rail` so it can't bleed onto the intro's own cat.
 
 ## [1.6.1] — 2026-06-14

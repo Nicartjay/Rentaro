@@ -3,7 +3,7 @@
    timeline is kept faithful to the original; only the logo text (our brand),
    the reveal-the-site ending, and the run guards are ours.
 
-   Runs once per browser session, is skippable (click / Esc), and is skipped
+   Runs on every page load, is skippable (click / Esc), and is skipped
    entirely under prefers-reduced-motion or when JS is off (see index.html).   */
 
 import { TweenMax, TimelineMax } from 'gsap'
@@ -13,29 +13,20 @@ const intro = document.getElementById('intro')
 if (intro) {
   const q = (sel) => intro.querySelector(sel)
   const qa = (sel) => intro.querySelectorAll(sel)
-  const SEEN_KEY = 'rentaro_intro_seen'
   const prefersReduced =
     window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-  let seen = false
-  try {
-    seen = sessionStorage.getItem(SEEN_KEY) === '1'
-  } catch (e) {}
 
   let revealed = false
   function reveal() {
     if (revealed) return
     revealed = true
-    try {
-      sessionStorage.setItem(SEEN_KEY, '1')
-    } catch (e) {}
     intro.classList.add('is-done')
     document.body.classList.remove('intro-lock')
     // Drop the overlay from the DOM once the fade-out finishes.
     setTimeout(() => intro.remove(), 700)
   }
 
-  if (prefersReduced || seen) {
+  if (prefersReduced) {
     // Don't show the loader at all — reveal the site immediately.
     intro.remove()
   } else {
