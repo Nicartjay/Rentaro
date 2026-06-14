@@ -111,27 +111,48 @@ a { color: inherit; text-decoration: none; }
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 14px 30px rgba(20,17,14,0.20);
 }
 .cat {
+  --pace: 104px;             /* how far the cat walks each way along the rail */
   position: absolute;
-  left: 60%;
-  bottom: calc(100% - 18px); /* seat the base on top of the handrail */
-  transform-origin: bottom center;
+  left: 50%;
+  margin-left: -65px;        /* centre the 130px-wide cat on left:50% */
+  bottom: calc(100% - 8px);  /* stand the paws on top of the handrail */
   opacity: 0;
-  transform: translateY(22px) scale(0.98);
-  transition: opacity 0.9s var(--ease), transform 1.1s var(--ease);
-  filter: drop-shadow(0 12px 14px rgba(20,17,14,0.28));
+  transform: translateY(20px);
+  transition: opacity 0.8s var(--ease), transform 1s var(--ease);
+  filter: drop-shadow(0 9px 11px rgba(20,17,14,0.26));
 }
 .cat__svg { display: block; overflow: visible; }
-.cat.is-in { opacity: 1; transform: translateY(0) scale(1); }
+.cat.is-in { opacity: 1; transform: translateY(0); }
 .cat.is-out {
-  opacity: 0; transform: translateY(-14px) scale(0.98);
+  opacity: 0; transform: translateY(-14px);
   transition: opacity 0.45s ease, transform 0.55s ease;
 }
-/* idle life — only while settled in */
-.cat.is-in .cat__svg { animation: cat-bob 5.5s ease-in-out infinite; }
-.cat__tail { transform-box: fill-box; transform-origin: 50% 6%; animation: cat-tail 4.2s ease-in-out infinite; }
+
+/* Motion (only once settled in): pace along the rail, flip at each end,
+   diagonal-gait leg swing, a subtle body bob, a swaying tail and a blink. */
+.cat.is-in .cat__walk { animation: cat-pace 11s ease-in-out infinite; }
+.cat.is-in .cat__face { animation: cat-face 11s ease-in-out infinite; }
+.cat.is-in .cat__body { animation: cat-bob 0.68s ease-in-out infinite; }
+.cat.is-in .leg--a { animation: leg-swing-a 0.68s ease-in-out infinite; }
+.cat.is-in .leg--b { animation: leg-swing-b 0.68s ease-in-out infinite; }
+.leg { transform-box: fill-box; transform-origin: 50% 8%; }     /* pivot at the hip */
+.cat__tail { transform-box: fill-box; transform-origin: 88% 86%; animation: cat-tail 2.4s ease-in-out infinite; }
 .cat__eye { transform-box: fill-box; transform-origin: center; animation: cat-blink 6.5s ease-in-out infinite; }
-@keyframes cat-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-@keyframes cat-tail { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(7deg); } }
+
+@keyframes cat-pace {
+  0%   { transform: translateX(calc(var(--pace) * -1)); }
+  50%  { transform: translateX(var(--pace)); }
+  100% { transform: translateX(calc(var(--pace) * -1)); }
+}
+@keyframes cat-face {            /* mirror through 0 ≈ a quick turn at each end */
+  0%, 47% { transform: scaleX(1); }
+  50%, 97% { transform: scaleX(-1); }
+  100% { transform: scaleX(1); }
+}
+@keyframes cat-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+@keyframes leg-swing-a { 0%, 100% { transform: rotate(-20deg); } 50% { transform: rotate(20deg); } }
+@keyframes leg-swing-b { 0%, 100% { transform: rotate(20deg); } 50% { transform: rotate(-20deg); } }
+@keyframes cat-tail { 0%, 100% { transform: rotate(-7deg); } 50% { transform: rotate(9deg); } }
 @keyframes cat-blink { 0%, 90%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.12); } }
 .hero__brand {
   position: absolute; inset: 0;
@@ -352,8 +373,8 @@ a { color: inherit; text-decoration: none; }
   .nav__burger { display: grid; }
   .hero__brand span { font-size: 32vw; margin-bottom: 8vh; }
   .hero__rail { top: 53%; left: -6vw; right: -6vw; }
-  .cat { left: 56%; }
-  .cat__svg { width: 94px; height: 122px; }
+  .cat { --pace: 58px; margin-left: -52px; }
+  .cat__svg { width: 104px; height: 68px; }
   .hero__panels {
     position: absolute; left: 20px; right: 20px; bottom: 24px;
     display: flex; flex-direction: column; gap: 12px;
@@ -766,4 +787,8 @@ body.has-player { padding-bottom: 70px; }
   }
   .hero__rail { transform: none !important; }
   .cat { opacity: 1 !important; transform: none !important; }
+  /* stand the cat still — no pacing, flipping, gait, bob or tail sway */
+  .cat__walk, .cat__face, .cat__body, .cat .leg, .cat__tail, .cat__eye {
+    animation: none !important; transform: none !important;
+  }
 }

@@ -4,6 +4,15 @@ All notable changes to this project are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); this project does not yet use formal
 semantic versioning.
 
+## [1.6.1] — 2026-06-14
+
+### Changed
+- **The hero cat now walks the railing** instead of sitting. Rebuilt as a side-profile
+  silhouette with a CSS-only four-leg diagonal gait, subtle body bob, swaying tail and a
+  quick mirror-turn at each end; it paces back and forth along the rail (travel distance
+  scales down on mobile). Still pure CSS — no JS change — and stands still under
+  reduced-motion.
+
 ## [1.6.0] — 2026-06-14
 
 ### Changed
