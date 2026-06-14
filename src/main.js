@@ -73,13 +73,15 @@ const prefersReduced =
   onScroll()
 })()
 
-/* ── Cat: settle onto the railing on load, slip away on scroll ────── */
+/* ── Cat: walk along the railing toward the pointer, then sit on arrival ── */
 ;(function () {
   const cat = document.getElementById('cat')
-  if (!cat) return
-  // Settle in on the next frame so the enter transition runs (instant under reduced-motion).
-  requestAnimationFrame(() => cat.classList.add('is-in'))
+  const rail = document.getElementById('rail')
+  if (!cat || !rail) return
 
+  const clamp = (v, lo, hi) => (v < lo ? lo : v > hi ? hi : v)
+
+  // Slip away while the hero is scrolled out of view.
   const THRESH = 10
   window.addEventListener(
     'scroll',
@@ -89,6 +91,70 @@ const prefersReduced =
     },
     { passive: true }
   )
+
+  let railLeft = 0
+  let maxX = 0
+  let catW = 130
+  let targetX = 0
+  let curX = 0
+
+  function measure() {
+    const r = rail.getBoundingClientRect()
+    railLeft = r.left
+    catW = cat.offsetWidth || catW
+    maxX = Math.max(0, r.width - catW)
+    targetX = clamp(targetX, 0, maxX)
+    curX = clamp(curX, 0, maxX)
+  }
+
+  measure()
+  targetX = curX = maxX / 2 // start in the middle of the rail
+  cat.style.transform = 'translateX(' + curX + 'px)'
+  requestAnimationFrame(() => cat.classList.add('is-in'))
+  window.addEventListener('resize', measure)
+
+  // Reduced motion: just sit there, centred — no chasing.
+  if (prefersReduced) {
+    cat.classList.add('is-sitting')
+    return
+  }
+
+  // Aim the cat at the pointer's x (mapped into the rail, centred under the cursor).
+  window.addEventListener(
+    'pointermove',
+    (e) => {
+      targetX = clamp(e.clientX - railLeft - catW / 2, 0, maxX)
+    },
+    { passive: true }
+  )
+
+  const SPEED = 2.6 // px per frame while walking
+  const ARRIVE = 2 // close enough → sit down
+  const LEAVE = 8 // pointer moved this far → get up and walk
+  let sitting = false
+
+  function frame() {
+    const dx = targetX - curX
+    const dist = Math.abs(dx)
+    if (sitting) {
+      if (dist > LEAVE) {
+        sitting = false
+        cat.classList.remove('is-sitting')
+      }
+    } else if (dist <= ARRIVE) {
+      curX = targetX
+      sitting = true
+      cat.classList.remove('is-stepping')
+      cat.classList.add('is-sitting')
+    } else {
+      curX += dx > 0 ? Math.min(SPEED, dist) : -Math.min(SPEED, dist)
+      cat.classList.toggle('is-facing-left', dx < 0)
+      cat.classList.add('is-stepping')
+    }
+    cat.style.transform = 'translateX(' + curX + 'px)'
+    requestAnimationFrame(frame)
+  }
+  requestAnimationFrame(frame)
 })()
 
 /* ── Scroll-spy: highlight the nav pill for the section in view ──── */

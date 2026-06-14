@@ -4,6 +4,18 @@ All notable changes to this project are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); this project does not yet use formal
 semantic versioning.
 
+## [1.8.0] — 2026-06-14
+
+### Changed
+- **The hero cat now follows the pointer.** Instead of pacing on a fixed loop, the cat
+  **walks toward the cursor** along the railing and **sits down** (the original
+  front-facing cat) once it reaches it; move the pointer again and it gets up and walks to
+  the new spot. JS drives the position via `requestAnimationFrame`, easing `translateX`
+  toward the pointer's x (works with touch via Pointer Events); two SVG poses
+  (walking / sitting) crossfade, the walker faces its direction of travel, and the gait
+  only runs while actually stepping. Under reduced-motion (or before any pointer input)
+  the cat simply sits, centred.
+
 ## [1.7.0] — 2026-06-14
 
 ### Added

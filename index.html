@@ -137,35 +137,56 @@
         <span class="rail__balusters"></span>
         <span class="rail__base"></span>
       </div>
+      <!-- The cat walks toward the pointer along the rail (JS), then sits on arrival. -->
       <div class="cat" id="cat">
-        <div class="cat__walk">   <!-- paces left↔right -->
-          <div class="cat__face"> <!-- flips to face the direction of travel -->
-            <svg class="cat__svg" viewBox="0 0 240 156" width="130" height="85"
-                 xmlns="http://www.w3.org/2000/svg" role="img"
-                 aria-label="連太郎's cat, walking along the railing">
-              <!-- far legs (behind the body), planted; rotate from the hip -->
-              <rect class="leg leg--a" x="84" y="82" width="10" height="64" rx="5" fill="#1a1618"/>
-              <rect class="leg leg--b" x="150" y="82" width="10" height="64" rx="5" fill="#1a1618"/>
-              <!-- body group (subtle bob, holds tail + head + eye) -->
-              <g class="cat__body">
-                <g class="cat__tail">
-                  <path d="M64 74 C46 70 34 54 40 38 C43 30 37 24 29 27"
-                        fill="none" stroke="#201b1d" stroke-width="14" stroke-linecap="round"/>
-                </g>
-                <path fill="#201b1d" d="M70 92 C56 92 54 72 64 64 C74 56 96 54 122 54
-                                         C150 54 170 56 180 66 C190 75 189 90 178 94
-                                         C168 98 86 98 70 92 Z"/>
-                <circle cx="198" cy="66" r="19" fill="#201b1d"/>
-                <ellipse cx="214" cy="74" rx="9" ry="7" fill="#201b1d"/>
-                <path d="M188 50 L185 30 L201 46 Z" fill="#201b1d"/>
-                <path d="M201 48 L212 30 L216 47 Z" fill="#201b1d"/>
-                <ellipse class="cat__eye" cx="203" cy="64" rx="3.6" ry="5" fill="#74e0a8"/>
+        <!-- walking pose (side profile) — faces its direction of travel -->
+        <div class="cat__pose cat__pose--walk">
+          <svg class="cat__svg cat__svg--walk" viewBox="0 0 240 156" width="130" height="85"
+               xmlns="http://www.w3.org/2000/svg" role="img"
+               aria-label="連太郎's cat, walking along the railing">
+            <!-- far legs (behind the body), planted; rotate from the hip -->
+            <rect class="leg leg--a" x="84" y="82" width="10" height="64" rx="5" fill="#1a1618"/>
+            <rect class="leg leg--b" x="150" y="82" width="10" height="64" rx="5" fill="#1a1618"/>
+            <!-- body group (subtle bob, holds tail + head + eye) -->
+            <g class="cat__body">
+              <g class="cat__tail">
+                <path d="M64 74 C46 70 34 54 40 38 C43 30 37 24 29 27"
+                      fill="none" stroke="#201b1d" stroke-width="14" stroke-linecap="round"/>
               </g>
-              <!-- near legs (in front of the body), planted -->
-              <rect class="leg leg--b" x="96" y="86" width="10" height="64" rx="5" fill="#201b1d"/>
-              <rect class="leg leg--a" x="162" y="86" width="10" height="64" rx="5" fill="#201b1d"/>
-            </svg>
-          </div>
+              <path fill="#201b1d" d="M70 92 C56 92 54 72 64 64 C74 56 96 54 122 54
+                                       C150 54 170 56 180 66 C190 75 189 90 178 94
+                                       C168 98 86 98 70 92 Z"/>
+              <circle cx="198" cy="66" r="19" fill="#201b1d"/>
+              <ellipse cx="214" cy="74" rx="9" ry="7" fill="#201b1d"/>
+              <path d="M188 50 L185 30 L201 46 Z" fill="#201b1d"/>
+              <path d="M201 48 L212 30 L216 47 Z" fill="#201b1d"/>
+              <ellipse class="cat__eye" cx="203" cy="64" rx="3.6" ry="5" fill="#74e0a8"/>
+            </g>
+            <!-- near legs (in front of the body), planted -->
+            <rect class="leg leg--b" x="96" y="86" width="10" height="64" rx="5" fill="#201b1d"/>
+            <rect class="leg leg--a" x="162" y="86" width="10" height="64" rx="5" fill="#201b1d"/>
+          </svg>
+        </div>
+        <!-- sitting pose (front) — shown once the cat reaches the pointer -->
+        <div class="cat__pose cat__pose--sit">
+          <svg class="cat__svg cat__svg--sit" viewBox="0 0 200 268" width="74" height="99"
+               xmlns="http://www.w3.org/2000/svg" role="img"
+               aria-label="連太郎's cat, sitting on the railing">
+            <g class="cat__tail">
+              <path d="M138 188 C162 190 174 214 166 240 C161 256 169 270 184 268"
+                    fill="none" stroke="#201b1d" stroke-width="18" stroke-linecap="round"/>
+            </g>
+            <ellipse cx="82" cy="221" rx="12" ry="10" fill="#201b1d"/>
+            <ellipse cx="118" cy="221" rx="12" ry="10" fill="#201b1d"/>
+            <path fill="#201b1d" d="M84 94 C68 108 58 150 57 190 C56 208 64 220 80 222
+                                     L120 222 C136 220 144 208 143 190 C142 150 132 108 116 94
+                                     C110 86 90 86 84 94 Z"/>
+            <path fill="#201b1d" d="M74 46 L60 10 L98 36 Z"/>
+            <path fill="#201b1d" d="M126 46 L140 10 L102 36 Z"/>
+            <circle cx="100" cy="62" r="34" fill="#201b1d"/>
+            <ellipse class="cat__eye" cx="86" cy="60" rx="4.6" ry="7" fill="#74e0a8"/>
+            <ellipse class="cat__eye" cx="114" cy="60" rx="4.6" ry="7" fill="#74e0a8"/>
+          </svg>
         </div>
       </div>
     </div>
