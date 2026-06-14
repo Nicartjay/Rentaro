@@ -71,11 +71,11 @@ respects `prefers-reduced-motion`.
 
 | Behavior | What it does |
 | --- | --- |
-| **Burger menu** | Toggles the mobile menu; syncs `aria-expanded`; closes on link click and on **Escape** (returning focus to the button). |
+| **Burger menu** | Toggles the mobile menu; syncs `aria-expanded`; moves focus into the menu on open and back to the button on close/**Escape**; traps Tab between the links and the button while open. |
 | **Hero parallax** | On scroll, drifts the slab image and the glass panels (desktop only, passive listener). Disabled under reduced-motion. |
 | **Birds state machine** | `enter → idle1 ⇄ idle2` loop; on scroll past a small threshold plays `leave`, and returns to `enter` at the top. Pauses/hides under reduced-motion. |
 | **Scroll-spy** | An `IntersectionObserver` highlights the nav pill (`[data-spy]`) for the section currently in view. Degrades gracefully if `IntersectionObserver` is missing. |
-| **Preview player** | A sticky bottom bar driving an `<audio>` element through the `TRACKS` queue in `src/tracks.js`. Play triggers (`[data-qi]`) on discography rows + the Latest tracklist set the index; prev/next/`ended` advance with wraparound; the playing release row is highlighted via `data-rel`. Plays Apple Music 30-second previews. |
+| **Preview player** | A sticky bottom bar driving an `<audio>` element through the `TRACKS` queue in `src/tracks.js`. Play triggers (`[data-qi]`) on discography rows + the Latest tracklist set the index; prev/next/`ended` advance with wraparound; the playing release row is highlighted via `data-rel`. Plays Apple Music 30-second previews. Closing resets the index (so re-clicking the same row re-opens the bar) and restores focus to the trigger button; a row click toggles play/pause when it belongs to the currently-playing release; an `error` listener surfaces "Preview unavailable" for expired URLs; an `aria-live` region + `aria-valuetext` announce track and seek changes. |
 
 ---
 
@@ -92,7 +92,10 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for hosting.
 ## Accessibility baseline
 
 Built in and verified by review: a skip-link, keyboard-operable + `aria`-wired mobile
-menu (`aria-controls` / `aria-expanded` / `role="navigation"`), `:focus-visible` rings in
-both theme zones, `alt`/`aria-hidden` on imagery, `lang` attributes on Japanese/Tagalog
-text, and full `prefers-reduced-motion` handling. Keep these when editing — see
-[CONTRIBUTING.md](../CONTRIBUTING.md).
+menu (`aria-controls` / `aria-expanded` / `role="navigation"`, focus moved in on open and
+restored on close, Tab trapped while open), a `role="region"` player with an `aria-live`
+"now playing" announcement, focus restored to the trigger on close, and `aria-valuetext`
+on the seek slider, `:focus-visible` rings in both theme zones, `alt`/`aria-hidden` on
+imagery (including decorative inline SVGs), `scroll-padding-top` so anchor jumps clear the
+fixed nav, `lang` attributes on Japanese/Tagalog text, and full `prefers-reduced-motion`
+handling. Keep these when editing — see [CONTRIBUTING.md](../CONTRIBUTING.md).

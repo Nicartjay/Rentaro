@@ -17,10 +17,35 @@ const prefersReduced =
     open.style.display = isOpen ? 'none' : 'block'
     close.style.display = isOpen ? 'block' : 'none'
     burger.setAttribute('aria-expanded', String(isOpen))
+    // Move focus into the menu when opening so keyboard users land on the links.
+    if (isOpen) {
+      const first = menu.querySelector('a')
+      if (first) first.focus()
+    }
   }
   burger.addEventListener('click', () => setOpen(!menu.classList.contains('open')))
-  // Close the menu after tapping a link.
-  menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)))
+  // Close the menu after tapping a link, returning focus to the toggle.
+  menu.querySelectorAll('a').forEach((a) =>
+    a.addEventListener('click', () => {
+      setOpen(false)
+      burger.focus()
+    })
+  )
+  // Keep Tab cycling within the open menu (simple focus trap: burger ↔ links).
+  menu.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab' || !menu.classList.contains('open')) return
+    const links = Array.from(menu.querySelectorAll('a'))
+    if (!links.length) return
+    const first = links[0]
+    const last = links[links.length - 1]
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault()
+      burger.focus()
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault()
+      burger.focus()
+    }
+  })
   // Close on Escape and return focus to the toggle.
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && menu.classList.contains('open')) {
@@ -204,6 +229,7 @@ if (prefersReduced) {
 
   let idx = -1
   let seeking = false
+  let triggerEl = null // the play button that last opened the player (for focus return)
   const ACCENT =
     getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#1f7a48'
 
@@ -267,27 +293,48 @@ if (prefersReduced) {
     audio.pause()
     bar.hidden = true
     document.body.classList.remove('has-player')
-    document.querySelectorAll('.is-playing').forEach((el) => el.classList.remove('is-playing'))
+    document
+      .querySelectorAll('.is-playing, .is-paused')
+      .forEach((el) => el.classList.remove('is-playing', 'is-paused'))
+    // Reset so the next click on the just-closed track re-opens the bar via load()
+    // (the n === idx branch would otherwise resume audio while the bar stays hidden).
+    idx = -1
+    // Return focus to the play button that opened the player.
+    if (triggerEl && triggerEl.isConnected) triggerEl.focus()
+    triggerEl = null
   })
 
   audio.addEventListener('play', () => setPlaying(true))
   audio.addEventListener('pause', () => setPlaying(false))
   audio.addEventListener('ended', () => load(idx + 1, true))
+  // Apple rotates/expires preview URLs — surface a clear state instead of a silent stuck bar.
+  audio.addEventListener('error', () => {
+    if (!audio.src) return // ignore the spurious error when src is cleared
+    setPlaying(false)
+    titleEl.textContent = 'Preview unavailable'
+    seek.value = 0
+    curEl.textContent = '0:00'
+    paintSeek()
+  })
   audio.addEventListener('loadedmetadata', () => {
     const d = isFinite(audio.duration) && audio.duration > 0 ? audio.duration : 30
     seek.max = d
     durEl.textContent = fmt(d)
     paintSeek()
   })
+  const announceSeek = (v) =>
+    seek.setAttribute('aria-valuetext', fmt(v) + ' of ' + fmt(Number(seek.max) || 30))
   audio.addEventListener('timeupdate', () => {
     if (seeking) return
     curEl.textContent = fmt(audio.currentTime)
     seek.value = audio.currentTime
+    announceSeek(audio.currentTime)
     paintSeek()
   })
   seek.addEventListener('input', () => {
     seeking = true
     curEl.textContent = fmt(seek.value)
+    announceSeek(seek.value)
     paintSeek()
   })
   seek.addEventListener('change', () => {
@@ -301,9 +348,19 @@ if (prefersReduced) {
     btn.addEventListener('click', (e) => {
       e.preventDefault()
       const n = parseInt(btn.dataset.qi, 10) || 0
-      if (n === idx) {
+      // A discography row exposes only its release's first track, but the player can be
+      // on any track of that release — treat a click on the highlighted row as a toggle.
+      const sameRow =
+        n === idx ||
+        (idx >= 0 &&
+          btn.classList.contains('log-play') &&
+          TRACKS[idx] &&
+          TRACKS[n] &&
+          TRACKS[idx].rel === TRACKS[n].rel)
+      if (sameRow) {
         audio.paused ? play() : audio.pause()
       } else {
+        triggerEl = btn
         load(n, true)
       }
     })

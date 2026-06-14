@@ -87,8 +87,9 @@ The page loads a few things from third-party CDNs at runtime (not bundled):
 These must be reachable over **HTTPS** from the visitor's browser. If you want a fully
 self-hosted, offline-proof build, download those assets into `public/` and update the
 URLs in `index.html` / `src/style.css`. "Zimula Trial" is a **trial** font — confirm
-licensing before production use, or swap it for a licensed/again-free alternative in
-`src/style.css` (the `@import` / `<link>` lines and the `--font-*` variables).
+licensing before production use, or swap it for a licensed/again-free alternative by
+editing the font `<link>` tags in `index.html` and the `--font-*` variables in
+`src/style.css`.
 
 ---
 

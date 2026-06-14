@@ -70,8 +70,10 @@ and the bottom player share it:
 | **Noto Serif JP** (400/600/900) | `--jp-serif` | Japanese text, the giant 連太郎 brand, kanji watermarks |
 | **SF Mono / ui-monospace** | `--font-mono` | eyebrows, meta, tags, track numbers, labels (the editorial mono detail) |
 
-Loaded in `index.html` (`<link>` for Zimula Med/Bd + Google Noto Serif JP) and via an
-`@import` for Zimula Reg at the top of `style.css`.
+All font CSS is loaded via `<link>` in `index.html` (Zimula Reg/Med/Bd + Google Noto Serif
+JP), with a `preconnect` to `db.onlinewebfonts.com` so the requests start early and fetch
+in parallel. (Zimula Reg used to load via `@import` at the top of `style.css`, which chained
+it behind the stylesheet download — it was moved to a `<link>` to remove that round-trip.)
 
 > **"Zimula Trial" is a trial font.** Confirm licensing before production, or replace the
 > font links + `--font-*` variables with a licensed alternative.
@@ -97,8 +99,11 @@ Declared on `.content`:
 | `≤ 767px` | landing: nav → burger, hero type scales up, panels stack |
 | `≤ 720px` | social grid, contact card, **and gallery** go single-column; release cover capped at 420px |
 
-`.hero` uses `overflow: clip` so the oversized slab (160–220vw) can never cause
-horizontal scrolling on mobile.
+`.hero` uses `overflow: clip` (with `overflow: hidden` declared first as a fallback for
+Safari < 16) so the oversized slab (160–220vw) can never cause horizontal scrolling on
+mobile. Full-height landing blocks (`.hero`, `.sec2` and the hero layers) declare `100vh`
+then `100dvh`, so they match the *visible* viewport under a mobile browser's URL bar.
+`html` sets `scroll-padding-top: 88px` so in-page anchor jumps clear the fixed nav.
 
 ---
 

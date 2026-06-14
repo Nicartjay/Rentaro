@@ -4,6 +4,59 @@ All notable changes to this project are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); this project does not yet use formal
 semantic versioning.
 
+## [1.5.0] — 2026-06-14
+
+A frontend audit-and-fix pass: real bugs, accessibility, mobile layout and share/SEO.
+
+### Fixed
+- **Player could keep playing with no visible controls.** After closing the player and
+  then clicking the *same* track again, the click took the "toggle" branch and resumed
+  audio without re-showing the bar — audio with no way to pause, seek or close. Closing
+  now resets the active index so the next click always re-opens the bar.
+- **Mobile menu hidden behind the player.** The open burger menu (`z-index: 99`) sat under
+  the sticky player (`150`); the bottom "Listen" link could be covered. Menu raised to
+  `z-index: 200` (above nav `100` and player `150`).
+- **Anchor links hid section headings.** With a fixed ~80px nav and no `scroll-padding`,
+  clicking a nav pill or the skip-link scrolled the target under the nav. Added
+  `scroll-padding-top: 88px` on `html`.
+- **Discography cover toggle for multi-song releases.** A row exposes only its release's
+  first track; clicking the highlighted row while a *later* track of the same release was
+  playing reloaded the first track instead of pausing. It now toggles play/pause when the
+  clicked row belongs to the currently-playing release.
+- Stray `is-paused` class is now cleared alongside `is-playing` when the player closes.
+
+### Added
+- **Social share previews.** `og:image` + `og:image:alt`/dimensions and a Twitter/X
+  `summary_large_image` card (pointing at the Tahimik cover) — links previously shared as
+  a blank text box. Added `rel="canonical"` and a Schema.org **`MusicGroup`** JSON-LD block
+  (name, alt names, genre, streaming `sameAs`) for artist rich results.
+- **Audio error handling** — an expired/404 Apple preview now shows "Preview unavailable"
+  instead of leaving the bar silently stuck in a playing state.
+
+### Accessibility
+- Mobile menu now moves focus to the first link on open, returns focus to the burger on
+  close, and traps Tab while open (WCAG 2.4.3).
+- Player returns focus to the originating play button on close; gained `role="region"`,
+  an `aria-live="polite"` region announcing track changes, and `aria-valuetext` on the
+  seek slider ("0:12 of 0:30" instead of a raw float).
+- `aria-hidden` on decorative SVG icons (nav/panel arrows, sec2 note) and the
+  non-interactive play glyph in the hero CTA.
+
+### Performance / robustness
+- **`preconnect`** for the font CDN (`db.onlinewebfonts.com`) and the hero-media origin
+  (`plugin-assets.open-design.ai`), removing connection-setup latency on the critical path.
+- Moved the third Zimula face (Reg) from a CSS `@import` to a `<link>` in `index.html`, so
+  all three font CSS files fetch in parallel instead of chaining behind `style.css`.
+- `100dvh` fallbacks on the hero/sec2 full-height blocks (correct height under the mobile
+  URL bar), and `overflow: hidden` before `overflow: clip` on `.hero` (Safari < 16).
+- `.content .row-between` now wraps, so the Latest/Discography section headers don't clip
+  their date/button on narrow screens.
+
+### Notes
+- All changes are in source (`index.html`, `src/main.js`, `src/style.css`); `dist/` is
+  rebuilt at deploy time. Self-hosting the third-party hero/bird videos and adding video
+  `poster` frames were identified but deferred (no first-party assets yet).
+
 ## [1.4.1] — 2026-06-13
 
 ### Fixed

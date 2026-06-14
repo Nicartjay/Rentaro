@@ -7,7 +7,8 @@
                     styles above.
    ════════════════════════════════════════════════════════════════ */
 
-@import url('https://db.onlinewebfonts.com/c/46024824a3dd3309c3a7f46f4f1283ba?family=Zimula+Trial+Reg');
+/* Zimula Trial Reg is loaded via <link> in index.html (alongside Med/Bd) so all three
+   font CSS files fetch in parallel instead of chaining behind this stylesheet's download. */
 
 :root {
   --bg-page: #f4f0e8;
@@ -32,7 +33,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 88px; /* clear the fixed nav on anchor jumps */ }
 body {
   font-family: 'Zimula Trial Med', -apple-system, system-ui, sans-serif;
   background: var(--bg-page);
@@ -62,25 +63,27 @@ a { color: inherit; text-decoration: none; }
   position: relative;
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh; /* match the visible viewport on mobile (excludes the URL bar) */
+  overflow: hidden; /* fallback for Safari <16, which ignores overflow:clip */
   overflow: clip; /* clip the 160–220vw slab so it can't trigger horizontal scroll on iOS */
   font-family: 'Zimula Trial Med', sans-serif;
 }
 .hero__bg {
   position: absolute; inset: 0;
-  width: 100%; height: 100vh;
+  width: 100%; height: 100vh; height: 100dvh;
   object-fit: cover;
   z-index: 0;
 }
 .hero__overlay {
   position: absolute; inset: 0;
-  height: 100vh;
+  height: 100vh; height: 100dvh;
   background: var(--warm-12);
   pointer-events: none;
   z-index: 1;
 }
 .birds {
   position: absolute; top: 0; left: 0;
-  width: 100%; height: 100vh;
+  width: 100%; height: 100vh; height: 100dvh;
   pointer-events: none;
   z-index: 8;
 }
@@ -91,7 +94,7 @@ a { color: inherit; text-decoration: none; }
 }
 .hero__brand {
   position: absolute; inset: 0;
-  height: 100vh;
+  height: 100vh; height: 100dvh;
   display: flex; align-items: center; justify-content: center;
   pointer-events: none;
   z-index: 5;
@@ -179,7 +182,7 @@ a { color: inherit; text-decoration: none; }
   -webkit-backdrop-filter: blur(16px);
   border-radius: 18px; padding: 8px;
   box-shadow: 0 8px 40px rgba(0,0,0,0.14);
-  z-index: 99;
+  z-index: 200; /* above the nav (100) and the sticky player (150) when open */
 }
 .mobile-menu.open { display: block; }
 .mobile-menu a {
@@ -260,7 +263,7 @@ a { color: inherit; text-decoration: none; }
 /* ════════ SECTION 2 ════════ */
 .sec2 {
   position: relative;
-  width: 100%; min-height: 100vh;
+  width: 100%; min-height: 100vh; min-height: 100dvh;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   overflow: hidden;
@@ -408,7 +411,7 @@ a { color: inherit; text-decoration: none; }
 .content .section { padding-block: clamp(56px, 9vw, 104px); }
 .content .section + .section { border-top: 1px solid var(--c-border); }
 .content .row { display: flex; align-items: center; gap: var(--gap-md); }
-.content .row-between { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-md); }
+.content .row-between { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-md); flex-wrap: wrap; }
 .content .grid-1-2 { display: grid; grid-template-columns: 1fr 1.4fr; gap: var(--gap-xl); align-items: center; }
 
 .content h2, .content .h2 {

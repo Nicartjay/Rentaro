@@ -152,15 +152,23 @@ the text inside `.panel-left__head`, `.panel-right__top`, and the `<h2>` in `.se
 
 ## 8. SEO / preview metadata
 
-In `<head>` of `index.html`: the `<title>`, `<meta name="description">`, and the
-`og:*` tags (used when the link is shared on social media). Update these if the tagline
-changes. There is no `og:image` yet — add one once you have a shareable cover/portrait:
+In `<head>` of `index.html`: the `<title>`, `<meta name="description">`, the `og:*` /
+`twitter:*` tags (used when the link is shared on social media), `rel="canonical"`, and a
+Schema.org **`MusicGroup`** JSON-LD block (artist name, genres, streaming links). Update
+these if the tagline, links or genres change.
+
+The share image (`og:image` + `twitter:image`) currently points at the latest single's
+cover, `https://rentaro.nicart.space/album/tahimik.jpg` (1400×1400). To use a different or
+purpose-built image, drop it in `public/` (or `public/album/` / `public/img/`) and update
+both URLs — and the `og:image:width` / `height` to match:
 
 ```html
 <meta property="og:image" content="https://rentaro.nicart.space/og.jpg" />
+<meta name="twitter:image" content="https://rentaro.nicart.space/og.jpg" />
 ```
 
-(put `og.jpg` in `public/`).
+A landscape **1200×630** image renders best across platforms; the square cover is a fine
+fallback.
 
 ---
 
