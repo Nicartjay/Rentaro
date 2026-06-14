@@ -58,6 +58,41 @@ a { color: inherit; text-decoration: none; }
   box-shadow: 0 8px 30px rgba(0,0,0,0.35);
 }
 
+/* ════════ FIRST-LOAD INTRO — cat-plays-with-the-logo loader ════════
+   A full-screen overlay that runs the GSAP cat animation, then fades to
+   reveal the site. Hidden under reduced-motion (skipped in JS too). */
+.intro {
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-page);
+  overflow: hidden;
+  cursor: pointer; /* click anywhere to skip */
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+.intro.is-done { opacity: 0; visibility: hidden; pointer-events: none; }
+body.intro-lock { overflow: hidden; }
+
+.intro .wrapper-no7 { display: flex; align-items: center; justify-content: center; }
+.intro .animation-wrapper { display: flex; align-items: center; }
+.intro .cat-wrapper { width: clamp(190px, 40vw, 300px); }
+.intro .cat { width: 100%; overflow: visible; fill: var(--ink-1); }
+.intro .eyes circle { fill: #74e0a8; }   /* luminous mint eyes, matching the hero cat */
+.intro .frontlegs, .intro .backlegs { opacity: 1; }
+.intro .logoani {
+  align-self: flex-end;
+  margin-left: -8px;
+  font-family: var(--jp-serif);
+  font-weight: 900;
+  font-size: clamp(40px, 8vw, 72px);
+  line-height: 1;
+  color: var(--ink-1);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro { display: none !important; }
+}
+
 /* ════════ SECTION 1 — HERO ════════ */
 .hero {
   position: relative;
@@ -110,7 +145,8 @@ a { color: inherit; text-decoration: none; }
   background: linear-gradient(180deg, #2a2420 0%, #131110 100%);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 14px 30px rgba(20,17,14,0.20);
 }
-.cat {
+/* Scoped to .hero__rail so these never touch the intro overlay's own .cat SVG. */
+.hero__rail .cat {
   --pace: 104px;             /* how far the cat walks each way along the rail */
   position: absolute;
   left: 50%;
@@ -121,23 +157,23 @@ a { color: inherit; text-decoration: none; }
   transition: opacity 0.8s var(--ease), transform 1s var(--ease);
   filter: drop-shadow(0 9px 11px rgba(20,17,14,0.26));
 }
-.cat__svg { display: block; overflow: visible; }
-.cat.is-in { opacity: 1; transform: translateY(0); }
-.cat.is-out {
+.hero__rail .cat__svg { display: block; overflow: visible; }
+.hero__rail .cat.is-in { opacity: 1; transform: translateY(0); }
+.hero__rail .cat.is-out {
   opacity: 0; transform: translateY(-14px);
   transition: opacity 0.45s ease, transform 0.55s ease;
 }
 
 /* Motion (only once settled in): pace along the rail, flip at each end,
    diagonal-gait leg swing, a subtle body bob, a swaying tail and a blink. */
-.cat.is-in .cat__walk { animation: cat-pace 11s ease-in-out infinite; }
-.cat.is-in .cat__face { animation: cat-face 11s ease-in-out infinite; }
-.cat.is-in .cat__body { animation: cat-bob 0.68s ease-in-out infinite; }
-.cat.is-in .leg--a { animation: leg-swing-a 0.68s ease-in-out infinite; }
-.cat.is-in .leg--b { animation: leg-swing-b 0.68s ease-in-out infinite; }
-.leg { transform-box: fill-box; transform-origin: 50% 8%; }     /* pivot at the hip */
-.cat__tail { transform-box: fill-box; transform-origin: 88% 86%; animation: cat-tail 2.4s ease-in-out infinite; }
-.cat__eye { transform-box: fill-box; transform-origin: center; animation: cat-blink 6.5s ease-in-out infinite; }
+.hero__rail .cat.is-in .cat__walk { animation: cat-pace 11s ease-in-out infinite; }
+.hero__rail .cat.is-in .cat__face { animation: cat-face 11s ease-in-out infinite; }
+.hero__rail .cat.is-in .cat__body { animation: cat-bob 0.68s ease-in-out infinite; }
+.hero__rail .cat.is-in .leg--a { animation: leg-swing-a 0.68s ease-in-out infinite; }
+.hero__rail .cat.is-in .leg--b { animation: leg-swing-b 0.68s ease-in-out infinite; }
+.hero__rail .leg { transform-box: fill-box; transform-origin: 50% 8%; }     /* pivot at the hip */
+.hero__rail .cat__tail { transform-box: fill-box; transform-origin: 88% 86%; animation: cat-tail 2.4s ease-in-out infinite; }
+.hero__rail .cat__eye { transform-box: fill-box; transform-origin: center; animation: cat-blink 6.5s ease-in-out infinite; }
 
 @keyframes cat-pace {
   0%   { transform: translateX(calc(var(--pace) * -1)); }
@@ -373,8 +409,8 @@ a { color: inherit; text-decoration: none; }
   .nav__burger { display: grid; }
   .hero__brand span { font-size: 32vw; margin-bottom: 8vh; }
   .hero__rail { top: 53%; left: -6vw; right: -6vw; }
-  .cat { --pace: 58px; margin-left: -52px; }
-  .cat__svg { width: 104px; height: 68px; }
+  .hero__rail .cat { --pace: 58px; margin-left: -52px; }
+  .hero__rail .cat__svg { width: 104px; height: 68px; }
   .hero__panels {
     position: absolute; left: 20px; right: 20px; bottom: 24px;
     display: flex; flex-direction: column; gap: 12px;
@@ -786,9 +822,10 @@ body.has-player { padding-bottom: 70px; }
     animation-duration: .01ms !important;
   }
   .hero__rail { transform: none !important; }
-  .cat { opacity: 1 !important; transform: none !important; }
+  .hero__rail .cat { opacity: 1 !important; transform: none !important; }
   /* stand the cat still — no pacing, flipping, gait, bob or tail sway */
-  .cat__walk, .cat__face, .cat__body, .cat .leg, .cat__tail, .cat__eye {
+  .hero__rail .cat__walk, .hero__rail .cat__face, .hero__rail .cat__body,
+  .hero__rail .leg, .hero__rail .cat__tail, .hero__rail .cat__eye {
     animation: none !important; transform: none !important;
   }
 }

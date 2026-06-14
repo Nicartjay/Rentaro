@@ -4,6 +4,20 @@ All notable changes to this project are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); this project does not yet use formal
 semantic versioning.
 
+## [1.7.0] — 2026-06-14
+
+### Added
+- **First-load intro animation.** A full-screen loader where a cat bats the **連太郎**
+  logo around, then pounces off-screen, revealing the site. Animation adapted from
+  [CodePen WLGaJK](https://codepen.io/eyesight/pen/WLGaJK) ("cat loader" by eyesight),
+  rebranded to our logo and ending by fading into the real page (`src/intro.js`,
+  `#intro` overlay).
+  - Powered by **GSAP** (`npm i gsap`) — bundled, not loaded from a CDN.
+  - Shown **once per browser session** (sessionStorage); **skippable** by clicking or
+    pressing Esc, with a safety timeout so a visitor is never trapped; **skipped entirely**
+    under `prefers-reduced-motion` and when JavaScript is disabled (`<noscript>`).
+  - Hero-cat CSS was scoped under `.hero__rail` so it can't bleed onto the intro's own cat.
+
 ## [1.6.1] — 2026-06-14
 
 ### Changed

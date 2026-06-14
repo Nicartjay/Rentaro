@@ -1,4 +1,5 @@
 import './style.css'
+import './intro.js'
 import { TRACKS } from './tracks.js'
 
 const prefersReduced =

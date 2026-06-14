@@ -65,12 +65,14 @@ Design tokens are documented in [STYLING.md](STYLING.md).
 ## JavaScript (`src/main.js`)
 
 ES module, imported by `index.html` via `<script type="module">`. It `import`s
-`style.css` so Vite bundles the stylesheet. Everything is wrapped in small IIFEs that
-no-op if their target elements are absent (so removing a section never throws). All of it
-respects `prefers-reduced-motion`.
+`style.css` (so Vite bundles the stylesheet) and `./intro.js` (the first-load loader,
+which `import`s **GSAP** — the one third-party JS library, bundled, not a CDN). Everything
+else is wrapped in small IIFEs that no-op if their target elements are absent (so removing
+a section never throws). All of it respects `prefers-reduced-motion`.
 
 | Behavior | What it does |
 | --- | --- |
+| **First-load intro** (`src/intro.js`) | A full-screen overlay (`#intro`) where a cat bats the **連太郎** logo around then bounds off, revealing the site. GSAP timeline adapted from CodePen WLGaJK. Runs **once per browser session** (sessionStorage), is skippable (click / Esc) with a safety timeout, and is skipped entirely under `prefers-reduced-motion` or with JS disabled. |
 | **Burger menu** | Toggles the mobile menu; syncs `aria-expanded`; moves focus into the menu on open and back to the button on close/**Escape**; traps Tab between the links and the button while open. |
 | **Hero parallax** | On scroll, drifts the foreground railing (`#rail`) and the glass panels (desktop only, passive listener). Disabled under reduced-motion. |
 | **Cat** | The cat (`#cat`, inline SVG) settles onto the railing on load (`is-in`), then **walks** back and forth along it — a CSS-only four-leg diagonal gait, body bob, swaying tail and a quick mirror-turn at each end — and slips away on scroll past a small threshold (`is-out`), returning at the top. Stands still (no walk/parallax) under reduced-motion. |
@@ -83,7 +85,8 @@ respects `prefers-reduced-motion`.
 
 Vite (`vite.config.js`): `base: '/'` (root-domain deploy), dev server on port 5173
 (auto-opens), production output to `dist/` with hashed asset filenames. `npm run build`
-transforms the 4 modules (HTML + CSS + JS + favicon) into a ~25 KB gzipped static bundle.
+bundles the HTML + CSS + JS (+ GSAP, + favicon). The JS is ~33 KB gzipped (most of it
+GSAP, used only by the first-load intro); the CSS ~7 KB gzipped.
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for hosting.
 

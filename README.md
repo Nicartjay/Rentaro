@@ -46,6 +46,7 @@ Requires **Node 18+** (Vite 6). That's the only prerequisite.
 ├── src/
 │   ├── style.css        # all styles (landing theme verbatim + warm-light content sections)
 │   ├── main.js          # behaviors: burger menu, hero parallax, cat, scroll-spy, player
+│   ├── intro.js         # first-load cat-loader intro (GSAP); reveals the site when done
 │   └── tracks.js        # auto-generated track data (titles, covers, 30s preview URLs)
 ├── public/
 │   ├── favicon.svg       # 連 favicon (served at /favicon.svg)
